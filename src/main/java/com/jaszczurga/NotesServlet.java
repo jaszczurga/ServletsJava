@@ -11,15 +11,21 @@ import java.io.PrintWriter;
 public class NotesServlet extends HttpServlet {
 
     @Override
-    protected void doGet(HttpServletRequest reqest, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html; charset=UTF-8");
-        response.getWriter().print(
-                "<html>\n" +
-                        "<body>\n" +
-                        "<h1>Hello World</h1>\n" +
-                        "<p>This is my very first, embedded Tomcat, HTML Page!</p>\n" +
-                        "</body>\n" +
-                        "</html>");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getRequestURI().equalsIgnoreCase("/")) {
+            response.setContentType("text/html; charset=UTF-8");
+            response.getWriter().print(
+                    "<html>\n" +
+                            "<body>\n" +
+                            "<h1>Hello World</h1>\n" +
+                            "<p>This is my very first, embedded Tomcat, HTML Page!</p>\n" +
+                            "</body>\n" +
+                            "</html>");
+        }
+        else if (request.getRequestURI().equalsIgnoreCase("/notes")) {
+            response.setContentType("application/json; charset=UTF-8");
+            response.getWriter().print("[]");
+        }
     }
 
 }
