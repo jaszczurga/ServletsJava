@@ -15,6 +15,7 @@ import java.io.PrintWriter;
 public class NotesServlet extends HttpServlet {
 
     private NoteService noteService = Application.noteService;
+    private ObjectMapper mapper = new ObjectMapper();
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -23,21 +24,21 @@ public class NotesServlet extends HttpServlet {
             response.getWriter().print(
                     "<html>\n" +
                             "<body>\n" +
-                            "<h1>Hello World</h1>\n" +
-                            "<p>This is my very first, embedded Tomcat, HTML Page!</p>\n" +
+                            "<h1>Notes App</h1>\n" +
+                            "<p>This is my playground application for creating REST api</p>\n" +
                             "</body>\n" +
                             "</html>");
         }
         else if (request.getRequestURI().equalsIgnoreCase("/notes")) {
             response.setContentType("application/json; charset=UTF-8");
-            response.getWriter().print("[]");
+            String json = mapper.writeValueAsString(noteService.getAllNotes());
+            response.getWriter().print(json);
         }
     }
 
    @Override
 protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
     if(request.getRequestURI().equalsIgnoreCase("/saveNote")){
-        ObjectMapper mapper = new ObjectMapper();
         Note note = mapper.readValue(request.getReader(), Note.class);
 
         Note createdNote = noteService.createNote(note.getTitle(), note.getContent());
