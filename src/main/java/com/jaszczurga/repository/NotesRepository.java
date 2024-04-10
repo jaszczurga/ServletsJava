@@ -27,9 +27,10 @@ public class NotesRepository {
 
     public Note create(Note note) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("INSERT INTO NOTES (title, content) VALUES (?, ?)");
-            ps.setString(1, note.getTitle());
-            ps.setString(2, note.getContent());
+            PreparedStatement ps = connection.prepareStatement("INSERT INTO NOTES (id,title, content) VALUES (?, ?, ?)");
+            ps.setString(2, note.getTitle());
+            ps.setString(3, note.getContent());
+            ps.setString( 1, note.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -43,9 +44,10 @@ public class NotesRepository {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM NOTES");
             ResultSet resultSet = ps.executeQuery();
             while (resultSet.next()) {
+                String id = resultSet.getString("ID");
                 String title = resultSet.getString("TITLE");
                 String content = resultSet.getString("CONTENT");
-                notes.add(new Note(title, content));
+                notes.add(new Note(id,title, content));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -53,27 +55,16 @@ public class NotesRepository {
         return notes;
     }
 
-    public Note delete(Note note) {
+    public String delete(String id) {
         try (Connection connection = dataSource.getConnection()) {
             PreparedStatement ps = connection.prepareStatement("DELETE FROM NOTES WHERE id = ?");
-            ps.setString(1, note.getId());
+            ps.setString(1, id);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return note;
+        return "Note deleted";
     }
 
-    public Note update(Note note) {
-        try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement ps = connection.prepareStatement("UPDATE NOTES SET content = ? WHERE id = ?");
-            ps.setString(1, note.getContent());
-            ps.setString(2, note.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return note;
-    }
 
 }

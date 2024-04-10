@@ -25,4 +25,8 @@ public class NoteService {
         notesRepository.create(note);
         return note;
     }
+
+    public void deleteNoteById(String id) {
+        notesRepository.delete(id);
+    }
 }

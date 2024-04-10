@@ -28,6 +28,12 @@ public class Note {
         this.content = content;
     }
 
+    public Note(String id, String title, String content) {
+        this.id = id;
+        this.title = title;
+        this.content = content;
+    }
+
     public void setId(Long id) {
         this.id = id.toString();
     }

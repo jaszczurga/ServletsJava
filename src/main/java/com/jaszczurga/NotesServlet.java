@@ -51,4 +51,15 @@ protected void doPost(HttpServletRequest request, HttpServletResponse response) 
     }
 }
 
+@Override
+protected void doDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    if(request.getRequestURI().equalsIgnoreCase( "/deleteNote" )) {
+        String id =  request.getParameter( "id" );
+        noteService.deleteNoteById( id );
+        response.setStatus( HttpServletResponse.SC_OK );
+    } else {
+        response.setStatus( HttpServletResponse.SC_NOT_FOUND );
+    }
+}
+
 }
